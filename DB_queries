@@ -1,1 +1,79 @@
+--create table university_professors
+CREATE TABLE university_professors(
+firstname VARCHAR(150),
+lastname VARCHAR(150),
+university VARCHAR(150),
+university_shortname VARCHAR(150),
+university_city VARCHAR(150),
+function VARCHAR(150),
+organization VARCHAR(150),
+organization_sector VARCHAR(150));
+
+-- print entire data from metadata
+SELECT *
+FROM university_professors;
+
+--create tables from metadata
+--create UIVERSITIES  tables
+CREATE TABLE universities (
+    id  SERIAL PRIMARY KEY,
+    university VARCHAR(255) NOT NULL,
+    university_shortname VARCHAR(255) NOT NULL ,
+    university_city VARCHAR(255) NOT NULL
+);
+
+-- create professors table
+CREATE TABLE professors (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    university_shortname VARCHAR(255) NOT NULL,
+    FOREIGN KEY (university_shortname) REFERENCES universities(university_shortname)
+);
+
+-- create organizations table
+CREATE TABLE organizations (
+    id  SERIAL PRIMARY KEY,
+    organization VARCHAR(255) NOT NULL ,
+    organization_sector VARCHAR(255) NOT NULL
+);
+
+-- create affiliations table
+CREATE TABLE affiliations (
+    id SERIAL PRIMARY KEY,
+    organization VARCHAR(255) NOT NULL,
+    university_shortname VARCHAR(255) NOT NULL,
+    function VARCHAR(255) NOT NULL,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    FOREIGN KEY (university_shortname) REFERENCES universities(university_shortname)
+);
+  
+  --adding another foreign key into affiliations table
+  ALTER TABLE affiliations
+  ADD CONSTRAINT fk_affiliations_organization
+  FOREIGN KEY (organization) REFERENCES organizations(organization);
+
+--inserting data into universities table
+INSERT INTO universities (university, university_shortname, university_city)
+SELECT DISTINCT university, university_shortname, university_city
+FROM university_professors;
+
+--inserting data into professors table
+INSERT INTO professors (firstname, lastname, university_shortname)
+SELECT DISTINCT firstname, lastname, university_shortname
+FROM university_professors;
+
+--inserting data into organizations table
+INSERT INTO organizations (organization, organization_sector)
+SELECT DISTINCT organization, organization_sector
+FROM university_professors;
+
+--inserting data into affiliations table
+INSERT INTO affiliations (organization, university_shortname, function, firstname, lastname)
+SELECT DISTINCT organization, university_shortname, function, firstname, lastname
+FROM university_professors;
+
+--appling different sql queries
+
 
