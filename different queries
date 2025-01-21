@@ -1,0 +1,66 @@
+-- here i  will apply different sql queries.
+
+  --adding another foreign key into exsisting table
+  ALTER TABLE affiliations
+  ADD CONSTRAINT fk_affiliations_organization
+  FOREIGN KEY (organization) REFERENCES organizations(organization);
+
+-- apply filter with 'where' clause
+SELECT distinct firstname ,
+	lastname,
+	university_shortname
+FROM  professors
+WHERE university_shortname='EPF';
+
+--drop column
+ALTER TABLE affiliations
+DROP COLUMN function;
+
+--sorting data with ORDER BY 
+SELECT university,
+    university_city
+FROM  universities
+ORDER BY university DESC; 
+
+--count all rows from selected table
+SELECT COUNT(*)
+FROM organizations;
+
+--count  rows with WHERE clause
+SELECT COUNT(*)
+FROM organizations
+WHERE organization_sector='Pharma & health';
+
+-- update exsisting table
+UPDATE organizations
+SET organization_sector='IT'
+WHERE id='83' AND id='85';
+
+-- appling joins 
+SELECT p.firstname,
+	p.lastname,
+	u.university,
+	u.university_shortname
+FROM professors AS p
+JOIN universities AS u
+ON p.university_shortname=u.university_shortname;
+
+--delete data from existing table
+DELETE FROM professors
+WHERE firstname = 'Karl' AND lastname = 'Aberer';
+
+-- count() with grouping
+SELECT university_shortname, 
+  COUNT(*)
+FROM professors
+GROUP BY university_shortname;
+
+-- Get universities with more than 10 professors
+SELECT university_shortname, COUNT(*)
+FROM professors
+GROUP BY university_shortname
+HAVING COUNT(*) > 10;
+
+
+
+
