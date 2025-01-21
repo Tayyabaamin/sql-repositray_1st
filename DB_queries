@@ -17,17 +17,17 @@ FROM university_professors;
 --create UIVERSITIES  tables
 CREATE TABLE universities (
     id  SERIAL PRIMARY KEY,
-    university VARCHAR(255) NOT NULL,
-    university_shortname VARCHAR(255) NOT NULL ,
-    university_city VARCHAR(255) NOT NULL
+    university VARCHAR(150) NOT NULL,
+    university_shortname VARCHAR(150) NOT NULL ,
+    university_city VARCHAR(150) NOT NULL
 );
 
 -- create professors table
 CREATE TABLE professors (
     id SERIAL PRIMARY KEY,
-    firstname VARCHAR(255) NOT NULL,
-    lastname VARCHAR(255) NOT NULL,
-    university_shortname VARCHAR(255) NOT NULL,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
+    university_shortname VARCHAR(50) NOT NULL,
     FOREIGN KEY (university_shortname) REFERENCES universities(university_shortname)
 );
 
@@ -48,11 +48,6 @@ CREATE TABLE affiliations (
     lastname VARCHAR(255) NOT NULL,
     FOREIGN KEY (university_shortname) REFERENCES universities(university_shortname)
 );
-  
-  --adding another foreign key into affiliations table
-  ALTER TABLE affiliations
-  ADD CONSTRAINT fk_affiliations_organization
-  FOREIGN KEY (organization) REFERENCES organizations(organization);
 
 --inserting data into universities table
 INSERT INTO universities (university, university_shortname, university_city)
@@ -74,6 +69,5 @@ INSERT INTO affiliations (organization, university_shortname, function, firstnam
 SELECT DISTINCT organization, university_shortname, function, firstname, lastname
 FROM university_professors;
 
---appling different sql queries
 
 
